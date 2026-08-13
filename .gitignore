@@ -4,6 +4,9 @@
 # Build output
 site/dist/
 
+# Wrangler's local cache. Holds the Cloudflare account id and name.
+.wrangler/
+
 # Local-only tools: preview.html is the superseded single-file prototype, and
 # make-sheet.py hardcodes an absolute path to it.
 preview.html

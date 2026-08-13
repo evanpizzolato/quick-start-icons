@@ -1,0 +1,28 @@
+{
+  // Deploy:  node site/build.mjs && cd site/host && npx wrangler deploy
+  //
+  // There is no `main` here on purpose. The portfolio Workers exist to run a
+  // password gate; this site has nothing to guard, and Cloudflare serves static
+  // assets directly when no script is bound. No Worker code, no KV, no secrets.
+  "name": "quickstart-icons",
+
+  "compatibility_date": "2026-08-13",
+
+  // custom_domain lets Cloudflare own the DNS record and the certificate, so
+  // there is nothing to set in the dashboard and nothing to renew. Deploying
+  // creates or replaces the record for this exact name and touches nothing
+  // else in the zone.
+  "routes": [
+    { "pattern": "icons.evanpizzolato.com", "custom_domain": true }
+  ],
+
+  "assets": {
+    // Build output, pointed at directly. `node site/build.mjs` writes it and
+    // it is gitignored, so build before deploying.
+    "directory": "../dist"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}
