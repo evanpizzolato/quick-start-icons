@@ -1,0 +1,684 @@
+/* Quick Start Icons
+   ------------------------------------------------------------------
+   Every colour, size and space below was measured off
+   quickstart.framer.website rather than invented. The three states the
+   reference does not define (hover, focus, active) are derived from that
+   palette; there is deliberately no accent colour, because the reference
+   does not have one.
+   ------------------------------------------------------------------ */
+
+:root {
+  /* measured */
+  --bg: #020203;
+  --hairline: #1f2126;
+  --text: #dfdfe5;
+  --text-strong: #e5e5eb;
+  --text-muted: #7d7e7f;
+  --text-faint: #363636;
+  --surface: #1a1a1a;
+
+  /* derived, for the states the reference leaves undefined */
+  --hairline-hover: #2a2d34;
+  --surface-hover: #242424;
+  --surface-sunken: #101012;
+
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Every length in this file is a multiple of 4, spacing and line boxes both.
+     The reference site's 160% line-heights land on 22.4px, which is not, so they
+     are snapped to 24. Font sizes are not spacing and are exempt: 11px eyebrow
+     labels and the 14px body come from the reference. */
+  --gutter: 72px;
+  --panel-w: 240px;
+
+  /* live control state: the whole grid reads these two values */
+  --qs-weight: 1.25;
+  --qs-radius-scale: 1;
+  --qs-join: round;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* A class selector beats the UA stylesheet's [hidden] rule, so .card { display:
+   flex } would keep filtered cards on screen. Restate it with enough weight. */
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-muted);
+  font: 500 14px/24px var(--sans);
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, p { margin: 0; }
+
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- header ---------- */
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px var(--gutter);
+}
+
+.logo {
+  display: grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  background: var(--surface);
+  color: var(--text);
+  font: 600 16px/1 var(--mono);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+.logo:hover { background: var(--surface-hover); }
+
+/* Buttons, not links: they open a dialog rather than go anywhere. The one real
+   link is the repo. */
+.top-nav {
+  display: flex;
+  gap: 24px;
+  margin-left: auto;
+}
+
+.top-nav button,
+.top-nav a {
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--text-muted);
+  font: 500 14px/24px var(--sans);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.top-nav button:hover,
+.top-nav a:hover { color: var(--text); }
+
+/* ---------- page ---------- */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 40px var(--gutter) 120px;
+}
+
+.hero { text-align: center; }
+
+.hero h1 {
+  font: 600 32px/44px var(--mono);
+  color: var(--text);
+}
+
+.deck {
+  max-width: 480px;
+  margin: 12px auto 0;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- two panes: controls left, grid right ---------- */
+
+.body {
+  display: grid;
+  grid-template-columns: var(--panel-w) minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+  /* 1296 is exactly 1440 minus two 72px gutters, so at the reference width the
+     panel's left edge lines up with the logo instead of being inset by the
+     leftover half of a narrower max-width. */
+  max-width: 1296px;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.panel { position: sticky; top: 32px; }
+
+.panel-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border: 1px solid var(--hairline);
+  padding: 16px;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.panel-head h2 {
+  font: 400 14px/24px var(--mono);
+  letter-spacing: -0.2px;
+  color: var(--text);
+}
+
+.panel-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 1px solid var(--hairline);
+  padding-top: 16px;
+}
+
+.count {
+  font: 400 12px/16px var(--mono);
+  letter-spacing: -0.2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- fields ---------- */
+
+.field { display: flex; flex-direction: column; gap: 8px; }
+
+.label {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.readout {
+  font: 400 14px/16px var(--mono);
+  letter-spacing: -0.2px;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* search */
+
+.search { position: relative; display: flex; align-items: center; }
+
+.search-icon,
+.search-key {
+  position: absolute;
+  pointer-events: none;
+  color: var(--text-muted);
+}
+.search-icon { left: 12px; display: flex; }
+.search-key {
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 16px;
+  border: 1px solid var(--hairline);
+  font: 400 11px/1 var(--mono);
+}
+
+.search input {
+  width: 100%;
+  height: 40px;
+  padding: 0 36px 0 40px;
+  border: 1px solid var(--hairline);
+  border-radius: 0;
+  background: var(--surface-sunken);
+  color: var(--text);
+  font: 500 14px/1 var(--sans);
+  letter-spacing: -0.01em;
+  transition: border-color 0.15s ease;
+  appearance: none;
+}
+.search input::placeholder { color: var(--text-muted); }
+.search input:hover { border-color: var(--hairline-hover); }
+.search input::-webkit-search-cancel-button { appearance: none; }
+
+/* range */
+
+input[type="range"] {
+  width: 100%;
+  height: 16px;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--hairline);
+}
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px; height: 12px;
+  margin-top: -4px;
+  border: 0;
+  border-radius: 0;
+  background: var(--text);
+  transition: transform 0.15s ease;
+}
+input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.15); }
+input[type="range"]::-moz-range-track { height: 4px; background: var(--hairline); }
+input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px;
+  border: 0; border-radius: 0;
+  background: var(--text);
+}
+
+/* segmented corner toggle */
+
+.segmented { display: grid; grid-template-columns: 1fr 1fr; }
+
+.segmented button {
+  padding: 8px 4px;
+  border: 1px solid var(--hairline);
+  background: transparent;
+  color: var(--text-muted);
+  font: 400 13px/20px var(--mono);
+  letter-spacing: -0.2px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.segmented button + button { border-left: 0; }
+.segmented button:hover { border-color: var(--hairline-hover); color: var(--text); }
+.segmented button + button:hover { border-left: 0; }
+.segmented button[aria-checked="true"] {
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--text);
+  font: 400 14px/24px var(--mono);
+  letter-spacing: -0.2px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.btn:hover { background: var(--surface-hover); }
+
+.ui {
+  flex: 0 0 auto;
+  width: var(--ui, 16px);
+  height: var(--ui, 16px);
+}
+
+.btn-icon { padding: 8px; }
+
+.btn-quiet {
+  padding: 4px 8px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.btn-quiet:hover { background: var(--surface); color: var(--text); }
+
+.btn-block { width: 100%; padding: 8px 12px; }
+
+.btn.is-done { background: var(--text); color: var(--bg); }
+
+.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+/* one focus treatment for everything, since there is no accent colour to spend */
+:where(a, button, input, [role="radio"]):focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+/* ---------- grid ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(196px, 1fr));
+  gap: 32px;
+}
+
+/* The glyph area is a fixed height rather than a flexible one, so a name that
+   wraps to two lines grows the card downward instead of pushing its glyph up.
+   Every glyph in a row then sits at the same offset from the top, which is the
+   whole point of a contact sheet. Grid rows stretch to their tallest card, so a
+   row containing a long name is 22px taller and still perfectly even. */
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hairline);
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+.card:hover { border-color: var(--hairline-hover); }
+
+.glyph {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  height: var(--glyph-h, 172px);
+  color: var(--text);
+}
+
+.card-dl {
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+.card:hover .card-dl,
+.card-dl:focus-visible { opacity: 1; }
+
+.card-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  flex: 1 1 auto;
+  border-top: 1px solid var(--hairline);
+  padding: 12px;
+}
+
+/* Names wrap rather than truncate. align-horizontal-center does not fit on one
+   line beside the Copy button at any card width the grid produces, and an
+   ellipsis in an icon library hides the one thing the card is there to tell you.
+   The footer is bottom-aligned and the card is square, so a second line eats
+   into the glyph area instead of making the row taller. */
+.card-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.empty { margin-top: 8px; font-size: 14px; }
+
+/* ---------- the live controls ----------
+   Weight: one CSS rule on the root <svg> beats its stroke-width presentation
+   attribute and inherits to every child, because no child declares its own.
+   170 icons repaint and JavaScript touches one element.
+
+   Corners: the selector says rect, so <ellipse rx> in `database` is not
+   reachable, and :not([data-radius="fixed"]) spares toggle / mic / mic-off.
+   Each rect scales from its own authored rx, echoed in --base-rx at build time. */
+
+/* stroke-linecap stays round in both corner modes and is not a dial. 24 dots
+   across 14 icons are authored as <path d="M9 16h.01"/> and exist only because
+   a round cap draws them; butt caps would erase them. */
+.glyph svg {
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: var(--qs-join);
+  stroke-width: var(--qs-weight);
+}
+
+.glyph rect:not([data-radius="fixed"]) {
+  rx: calc(var(--base-rx) * var(--qs-radius-scale) * 1px);
+}
+
+/* ---------- the docs sheet ----------
+   The prose, so the page can answer a question in a search result or an AI
+   answer without the reader driving the controls. It has to be real text in the
+   HTML, not built by script.
+
+   A dialog rather than a block under the grid, so the page stays the grid. No
+   dimmed backdrop: the sheet is a solid panel with the same hairline the
+   controls use, and the grid stays visible around it. */
+
+.sheet {
+  /* Not `inset: 0`: a dialog defaults to max-height stretch. Sizing to content
+     is what lets a short section open short instead of filling the screen. */
+  position: fixed;
+  inset: 32px;
+  width: auto;
+  max-width: 800px;
+  max-height: calc(100vh - 64px);
+  margin: auto;
+  padding: 0;
+  /* clip, not hidden: a hidden box is still scrollable from script, which
+     dragged the dialog up and took the header off screen. clip cannot. */
+  overflow: clip;
+  display: none;
+  flex-direction: column;
+  background: var(--bg);
+  border: 1px solid var(--hairline);
+  color: var(--text-muted);
+}
+
+.sheet[open] { display: flex; }
+
+/* No colour behind it. The dialog still traps focus and closes on Escape. */
+.sheet::backdrop { background: none; }
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex: none;
+  padding: 16px 16px 16px 32px;
+  border-bottom: 1px solid var(--hairline);
+  /* Must not scroll away: it holds the only visible way out. */
+  background: var(--bg);
+}
+
+.sheet-title {
+  color: var(--text);
+  font: 600 14px/24px var(--mono);
+}
+
+.sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 40px 32px 56px;
+}
+
+.doc { max-width: 680px; }
+
+.doc h2 {
+  margin-bottom: 16px;
+  color: var(--text);
+  font: 600 20px/28px var(--mono);
+}
+
+.doc h3 {
+  margin: 0 0 8px;
+  color: var(--text-strong);
+  font: 600 14px/24px var(--sans);
+  letter-spacing: -0.01em;
+}
+
+.doc p + p, .doc p + .steps, .doc p + .table-wrap { margin-top: 16px; }
+/* An h3 opens a new run of prose, so it gets the gap. A question is the
+   exception: it opens its own block and .qa spaces it. */
+.doc h3 { margin-top: 32px; }
+.qa-item h3 { margin-top: 0; }
+
+/* The first paragraph is the whole answer. Larger so it reads that way to a
+   person too, not only to a parser. */
+.lede { color: var(--text); font-size: 15px; }
+
+.steps {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.steps strong { color: var(--text-strong); font-weight: 600; }
+
+.doc code {
+  font: 400 13px/20px var(--mono);
+  color: var(--text-strong);
+}
+
+.code {
+  margin: 16px 0 0;
+  padding: 16px;
+  overflow-x: auto;
+  background: var(--surface-sunken);
+  border: 1px solid var(--hairline);
+}
+
+.code code { display: block; white-space: pre; color: var(--text-muted); }
+
+/* The densest way to state the facts, and what gets lifted whole into an AI
+   answer. Worth the markup. */
+.table-wrap { overflow-x: auto; }
+
+.spec {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.spec th, .spec td {
+  padding: 12px 16px 12px 0;
+  border-bottom: 1px solid var(--hairline);
+  vertical-align: top;
+  font-weight: 500;
+}
+
+.spec th {
+  width: 180px;
+  color: var(--text-strong);
+  font: 600 11px/24px var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.spec tr:last-child th, .spec tr:last-child td { border-bottom: 0; }
+
+.qa { display: flex; flex-direction: column; gap: 32px; }
+
+/* ---------- footer ---------- */
+
+.foot {
+  padding: 0 var(--gutter) 32px;
+  text-align: center;
+  color: var(--text-faint);
+  font-weight: 600;
+}
+
+/* ---------- responsive ----------
+   The premise of this site is the controls, so they never disappear. Below
+   1024 the panel becomes a bar that sticks to the top of the viewport. */
+
+@media (max-width: 1439px) { :root { --gutter: 32px; } }
+
+@media (max-width: 1023px) {
+  :root { --gutter: 24px; }
+
+  .body { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+
+  .panel {
+    top: 0;
+    z-index: 10;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 12px var(--gutter);
+    background: var(--bg);
+    border-bottom: 1px solid var(--hairline);
+  }
+  /* start, not end: the fields are different heights, so aligning their bottoms
+     staggers the three eyebrow labels. Aligning the tops lines the labels up. */
+  .panel-inner {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: start;
+    gap: 16px;
+    border: 0;
+    padding: 0;
+  }
+  .panel-head { display: none; }
+  .panel-foot {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    border-top: 0;
+    padding-top: 0;
+  }
+  .btn-block { width: auto; }
+  .field-weight { min-width: 160px; }
+
+  .page { gap: 32px; padding: 32px var(--gutter) 72px; }
+  .grid { gap: 16px; }
+  .sheet { inset: 16px; max-height: calc(100vh - 32px); }
+  .sheet-body { gap: 48px; padding: 32px 24px 40px; }
+  .sheet-head { padding-left: 24px; }
+}
+
+@media (max-width: 719px) {
+  .hero h1 { font-size: 26px; line-height: 36px; }
+
+  /* Four short words and a 40px logo still fit at 320, so the nav stays put.
+     flex-wrap is the escape hatch for a longer label later. */
+  .top { flex-wrap: wrap; gap: 12px 20px; }
+  .top-nav { gap: 20px; }
+
+  .doc h2 { font-size: 18px; line-height: 26px; }
+  .spec th { width: auto; }
+  /* Two columns will not hold a label and a sentence at this width. */
+  .spec, .spec tbody, .spec tr, .spec th, .spec td { display: block; }
+  .spec th { padding-bottom: 0; border-bottom: 0; }
+  .spec td { padding-top: 4px; }
+
+  .panel-inner { grid-template-columns: 1fr auto; gap: 12px 16px; }
+  .field-search { grid-column: 1 / -1; }
+  .panel-foot { grid-column: 1 / -1; justify-content: space-between; }
+  .search-key { display: none; }
+  .search input { padding-right: 12px; }
+
+  .grid { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); }
+  .card { --glyph-h: 116px; }
+  .card-meta { padding: 8px; }
+  .card-name { font-size: 13px; }
+  .btn-copy .btn-label { display: none; }
+  .btn-copy { padding: 8px; }
+  /* no hover on touch, so the download button is always out */
+  .card-dl { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}

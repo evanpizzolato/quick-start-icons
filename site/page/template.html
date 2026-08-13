@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Quick Start Icons: {{COUNT}} free open source SVG icons</title>
+<meta name="description" content="{{COUNT}} open source SVG icons with live stroke weight and corner controls. Copy or download any icon, or the whole set as a zip. MIT licensed, free for commercial use.">
+<link rel="canonical" href="{{ORIGIN}}/">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="author" content="Evan Pizzolato">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#020203">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Quick Start Icons">
+<meta property="og:url" content="{{ORIGIN}}/">
+<meta property="og:title" content="Quick Start Icons: {{COUNT}} free open source SVG icons">
+<meta property="og:description" content="Set the stroke weight and the corners, then copy. {{COUNT}} MIT licensed SVG icons, free for personal and commercial use.">
+<meta property="og:image" content="{{ORIGIN}}/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Quick Start Icons, {{COUNT}} open source SVG icons">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Quick Start Icons: {{COUNT}} free open source SVG icons">
+<meta name="twitter:description" content="Set the stroke weight and the corners, then copy. {{COUNT}} MIT licensed SVG icons, free for personal and commercial use.">
+<meta name="twitter:image" content="{{ORIGIN}}/og.png">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1a1a'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='15' font-weight='600' fill='%23dfdfe5'%3EQS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+
+<script type="application/ld+json">{{JSONLD}}</script>
+</head>
+<body>
+
+{{SPRITE}}
+
+<header class="top">
+  <a class="logo" href="/" aria-label="Quick Start Icons, home">QS</a>
+  <nav class="top-nav" aria-label="Documentation">
+    <button type="button" data-sheet="about">Docs</button>
+    <button type="button" data-sheet="faq">FAQ</button>
+    <button type="button" data-sheet="license">License</button>
+    <a href="{{REPO}}" rel="noopener">GitHub</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <div class="hero">
+    <h1>Quick Start Icons</h1>
+    <p class="deck">
+      {{COUNT}} open source SVG icons. Set the stroke weight and the corners,
+      then copy. Free forever for both personal and commercial use.
+    </p>
+  </div>
+
+  <div class="body">
+
+    <form class="panel" id="panel" autocomplete="off" onsubmit="return false">
+      <div class="panel-inner">
+
+        <div class="panel-head">
+          <h2>Customize</h2>
+          <button type="button" class="btn btn-quiet" id="reset">{{UI_REFRESH}}<span class="btn-label">Reset</span></button>
+        </div>
+
+        <div class="field field-search">
+          <label class="label" for="search">Search</label>
+          <div class="search">
+            <span class="search-icon" aria-hidden="true">{{UI_SEARCH}}</span>
+            <input type="search" id="search" placeholder="Search {{COUNT}} icons" aria-describedby="count">
+            <kbd class="search-key" aria-hidden="true">/</kbd>
+          </div>
+        </div>
+
+        <div class="field field-weight">
+          <div class="label-row">
+            <label class="label" for="weight">Stroke weight</label>
+            <output class="readout" id="weight-out" for="weight">1.25</output>
+          </div>
+          <input type="range" id="weight" min="1" max="3" step="0.25" value="1.25">
+        </div>
+
+        <div class="field field-corners">
+          <span class="label" id="corners-label">Corners</span>
+          <div class="segmented" role="radiogroup" aria-labelledby="corners-label">
+            <button type="button" role="radio" aria-checked="true" data-corners="rounded">Rounded</button>
+            <button type="button" role="radio" aria-checked="false" data-corners="square">Square</button>
+          </div>
+        </div>
+
+        <div class="panel-foot">
+          <p class="count" id="count">{{COUNT}} icons</p>
+          <button type="button" class="btn btn-block" id="download-all">{{UI_DOWNLOAD}}<span class="btn-label">Download all</span></button>
+        </div>
+
+      </div>
+    </form>
+
+    <div class="grid-wrap">
+      <div class="grid" id="grid">
+{{GRID}}
+      </div>
+      <p class="empty" id="empty" hidden>No icons match that. <button type="button" class="link" id="clear">Clear the search</button></p>
+    </div></div>
+
+</main>
+
+<!-- The prose lives in a dialog rather than under the grid, so the page stays the
+     grid and nothing but the grid. It is written into the HTML at build time and
+     hidden with CSS, not fetched or templated on open: crawlers and answer engines
+     read the markup, they do not click. The structured data in <head> carries the
+     same answers a second time, which is the copy that does not depend on a parser
+     descending into a closed dialog at all. -->
+<dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+  <div class="sheet-head">
+    <h2 class="sheet-title" id="sheet-title">Quick Start Icons</h2>
+    <button type="button" class="btn btn-icon" id="sheet-close" aria-label="Close">{{UI_CLOSE}}</button>
+  </div>
+
+  <div class="sheet-body">
+
+    <section class="doc" id="about" aria-labelledby="about-h">
+      <h2 id="about-h">What Quick Start Icons is</h2>
+      <p class="lede">
+        Quick Start Icons is a free, open source set of {{COUNT}} SVG icons for people
+        scaffolding a new project. Every icon is drawn as a live stroke on a 32 by 32
+        canvas, so the stroke weight and the corner style are controls on the page rather
+        than separate downloads. Copy one icon or download all {{COUNT}}. The license is MIT.
+      </p>
+      <p>
+        Most icon sets ship their weights as separate files, which means a thin set and a
+        bold set are two libraries to keep in step. Here the weight is one CSS custom
+        property that every icon inherits, and the corner toggle reaches the three different
+        ways a corner is authored in SVG: a rect radius, a stroke line join, and an arc baked
+        into the path data. Whatever you set is baked into the file you copy.
+      </p>
+    </section>
+
+    <section class="doc" id="using" aria-labelledby="using-h">
+      <h2 id="using-h">Using the icons</h2>
+      <p class="lede">
+        There is nothing to install. Set the two controls, find the icon, and copy it. The
+        SVG on your clipboard is a complete file with your settings already applied.
+      </p>
+      <ol class="steps">
+        <li><strong>Set the stroke weight.</strong> The slider runs from 1 to 3 in steps of 0.25. The default is 1.25.</li>
+        <li><strong>Choose the corners.</strong> Rounded or square, applied to all {{COUNT}} icons at once.</li>
+        <li><strong>Find the icon.</strong> Type in the search box, or press <kbd>/</kbd> from anywhere on the page.</li>
+        <li><strong>Copy or download.</strong> Copy puts the SVG markup on your clipboard. The download button in the corner of an icon saves a single <code>.svg</code>. Download all saves the whole set as a zip.</li>
+        <li><strong>Paste it.</strong> Inline SVG works in HTML, JSX, Vue, Svelte, and Figma. No build step and no package to add.</li>
+      </ol>
+      <h3>What a copied icon looks like</h3>
+      <p>
+        Every icon carries its presentation attributes on the root element and nothing on the
+        children, so one CSS rule can restyle the whole set:
+      </p>
+<pre class="code"><code>&lt;svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+     viewBox="0 0 32 32" fill="none" stroke="currentColor"
+     stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"&gt;
+  &lt;path d="M16 6L16 26"/&gt;
+  &lt;path d="M6 16L26 16"/&gt;
+&lt;/svg&gt;</code></pre>
+      <p>
+        Because the stroke is <code>currentColor</code>, the icon takes the CSS
+        <code>color</code> of whatever contains it. To recolor one, set <code>color</code> on
+        its parent. To resize one, change <code>width</code> and <code>height</code>, or drop
+        them and size it with CSS.
+      </p>
+    </section>
+
+    <section class="doc" id="specs" aria-labelledby="specs-h">
+      <h2 id="specs-h">Specifications</h2>
+      <div class="table-wrap">
+        <table class="spec">
+          <caption class="sr-only">Quick Start Icons technical specifications</caption>
+          <tbody>
+            <tr><th scope="row">Icons</th><td>{{COUNT}}</td></tr>
+            <tr><th scope="row">Format</th><td>SVG, one file per icon</td></tr>
+            <tr><th scope="row">Canvas</th><td>32 by 32 viewBox, exported at 24 by 24</td></tr>
+            <tr><th scope="row">Style</th><td>Outline, live strokes, no filled paths</td></tr>
+            <tr><th scope="row">Stroke weight</th><td>Adjustable from 1 to 3, default 1.25</td></tr>
+            <tr><th scope="row">Corners</th><td>Rounded or square, both derived from the same source</td></tr>
+            <tr><th scope="row">Color</th><td><code>currentColor</code>, inherits the CSS <code>color</code> of its parent</td></tr>
+            <tr><th scope="row">License</th><td>MIT</td></tr>
+            <tr><th scope="row">Dependencies</th><td>None. No npm package, no font file, no runtime.</td></tr>
+            <tr><th scope="row">Author</th><td>Evan Pizzolato</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="doc" id="faq" aria-labelledby="faq-h">
+      <h2 id="faq-h">Frequently asked questions</h2>
+      <div class="qa">{{FAQ}}</div>
+    </section>
+
+    <section class="doc" id="license" aria-labelledby="license-h">
+      <h2 id="license-h">License</h2>
+      <p class="lede">
+        Quick Start Icons is released under the MIT license. You can use the icons in
+        personal and commercial work, modify them, and ship them inside a product you sell.
+        Attribution is appreciated and not required. There is no paid tier and no icon held
+        back from the free set.
+      </p>
+      <p>Copyright &copy; <span data-year>{{YEAR}}</span> Evan Pizzolato.</p>
+    </section>
+
+  </div>
+</dialog>
+
+<footer class="foot">
+  <p>Copyright &copy; <span data-year>{{YEAR}}</span> Evan Pizzolato.</p>
+</footer>
+
+<p class="sr-only" role="status" aria-live="polite" id="live"></p>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+
+# Build output
+site/dist/
+
+# Local-only tools: preview.html is the superseded single-file prototype, and
+# make-sheet.py hardcodes an absolute path to it.
+preview.html
+make-sheet.py
+
+# Working notes and scratch. Not published: they carry planning context that is
+# not part of the library.
+plan-shots/
+_dropped/
+PROGRESS.md
+SITE-PLAN.md
+SITE-BUILD-PROMPT.md
+NEXT-SESSION-PROMPT.md
+icon-library-audit-cleanup-plan.md
+
+# Editor/OS
+.vscode/
+.idea/
+*.swp
