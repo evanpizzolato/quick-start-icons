@@ -255,9 +255,13 @@ h1, h2, p { margin: 0; }
 
 /* range */
 
+/* 44px tall, 4px of it painted. This is the control the whole page is built
+   around and it was a 16px grab strip, which is fine with a mouse and close to
+   unusable with a thumb. The track and thumb are unchanged; only the box you
+   can grab grew, and it centres the 4px track inside itself. */
 input[type="range"] {
   width: 100%;
-  height: 16px;
+  height: 44px;
   margin: 0;
   background: transparent;
   appearance: none;
@@ -397,6 +401,11 @@ input[type="range"]::-moz-range-thumb {
   position: absolute;
   top: 0;
   right: 0;
+  /* 40x40 around a 16px icon. Without this the button is 32x32, because the
+     only reason it was ever bigger was the .glyph rule below reaching its
+     chrome icon and blowing it up to 32px. */
+  min-width: 40px;
+  min-height: 40px;
   opacity: 0;
   transition: opacity 0.15s ease, background-color 0.15s ease;
 }
@@ -438,8 +447,14 @@ input[type="range"]::-moz-range-thumb {
 
 /* stroke-linecap stays round in both corner modes and is not a dial. 24 dots
    across 14 icons are authored as <path d="M9 16h.01"/> and exist only because
-   a round cap draws them; butt caps would erase them. */
-.glyph svg {
+   a round cap draws them; butt caps would erase them.
+
+   The child combinator is load-bearing. The download button also lives inside
+   .glyph, so `.glyph svg` matched its 16px chrome icon too and, outranking
+   .ui, rendered it at 32px: the same size as the library glyph it sits on top
+   of, and twice the size of the Copy icon in the same card. Only the library
+   glyph is a direct child. */
+.glyph > svg {
   width: 32px;
   height: 32px;
   fill: none;
@@ -449,7 +464,7 @@ input[type="range"]::-moz-range-thumb {
   stroke-width: var(--qs-weight);
 }
 
-.glyph rect:not([data-radius="fixed"]) {
+.glyph > svg rect:not([data-radius="fixed"]) {
   rx: calc(var(--base-rx) * var(--qs-radius-scale) * 1px);
 }
 

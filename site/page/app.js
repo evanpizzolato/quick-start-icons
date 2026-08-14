@@ -44,12 +44,12 @@
   const cssRxWorks = CSS.supports("rx", "1px");
   const scalableRects = cssRxWorks
     ? []
-    : [...grid.querySelectorAll('.glyph rect:not([data-radius="fixed"])')];
+    : [...grid.querySelectorAll('.glyph > svg rect:not([data-radius="fixed"])')];
 
   /* Path corners authored as quarter-turn arcs cannot be reached by CSS, so the
      build carried a derived squared `d` on each affected path. Stash the
      authored one on first use rather than shipping both copies in the HTML. */
-  const swappablePaths = [...grid.querySelectorAll(".glyph path[data-d-square]")];
+  const swappablePaths = [...grid.querySelectorAll(".glyph > svg path[data-d-square]")];
   for (const path of swappablePaths) path.dataset.dRound = path.getAttribute("d");
 
   function applyWeight() {
@@ -77,7 +77,9 @@
   /* ---------- serialization: the one definition of the output file ---------- */
 
   function svgText(name) {
-    const source = grid.querySelector(`.card[data-name="${name}"] .glyph svg`);
+    /* Child combinator: the download button's own chrome icon is also an svg
+       inside .glyph, and only document order kept this from picking it. */
+    const source = grid.querySelector(`.card[data-name="${name}"] .glyph > svg`);
     const clone = source.cloneNode(true);
     const scale = state.corners === "rounded" ? 1 : 0;
 
@@ -270,9 +272,18 @@
 
   /* ---------- controls ---------- */
 
+  /* A range fires input roughly per pixel of drag, and every one of those wrote
+     --qs-weight on :root, which repaints 651 SVG children. Coalesce to one
+     write per frame. The search box next to it was already debounced; this was
+     the control that was not. */
+  let weightFrame = 0;
   weight.addEventListener("input", () => {
     state.weight = parseFloat(weight.value);
-    applyWeight();
+    if (weightFrame) return;
+    weightFrame = requestAnimationFrame(() => {
+      weightFrame = 0;
+      applyWeight();
+    });
   });
 
   for (const btn of cornerBtns) {
