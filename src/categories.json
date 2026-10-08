@@ -1,0 +1,86 @@
+[
+  {
+    "slug": "arrows",
+    "title": "Arrows",
+    "heading": "Arrow icons",
+    "intro": "Arrow and chevron icons for navigation, pagination, sorting controls and dropdowns. The set has straight arrows in eight directions, return arrows that turn a corner, and single and double chevrons for each side.",
+    "icons": ["arrow-up", "arrow-down", "arrow-left", "arrow-right", "arrow-up-left", "arrow-up-right", "arrow-down-left", "arrow-down-right", "arrow-return-up", "arrow-return-down", "arrow-return-left", "arrow-return-right", "chevron-up", "chevron-down", "chevron-left", "chevron-right", "chevrons-up", "chevrons-down", "chevrons-left", "chevrons-right", "external-link"]
+  },
+  {
+    "slug": "actions",
+    "title": "Actions",
+    "heading": "Action icons",
+    "intro": "Action icons for the buttons most interfaces need: add, remove, close, copy, share, download, upload, search and delete. Most of them sit inside a button or a toolbar, so they are drawn to read clearly at 16 and 24 pixels.",
+    "icons": ["check", "close", "close-circle", "plus", "plus-circle", "minus", "remove", "copy", "download", "upload", "share", "link", "refresh", "search", "zoom-in", "zoom-out", "trash", "printer", "sign-in", "sign-out", "power"]
+  },
+  {
+    "slug": "editing",
+    "title": "Editing and text",
+    "heading": "Editing and text icons",
+    "intro": "Editing icons for text editors, design tools and content forms. The set covers writing, undo and redo, text alignment in six directions, type, contrast and design system components.",
+    "icons": ["edit", "pencil", "undo", "redo", "type", "align-left", "align-right", "align-top", "align-bottom", "align-horizontal-center", "align-vertical-center", "clipboard", "contrast", "component"]
+  },
+  {
+    "slug": "layout",
+    "title": "Layout and settings",
+    "heading": "Layout and settings icons",
+    "intro": "Layout icons for app shells, dashboards and settings screens. They cover menus, sidebars, grids, lists, tables, layers, drag handles, filters, sorting, toggles and the settings gear.",
+    "icons": ["menu", "more-horizontal", "more-vertical", "grid", "list", "table", "sidebar", "layers", "maximize", "minimize", "home", "grip", "filter", "sort", "sliders", "toggle", "gear"]
+  },
+  {
+    "slug": "files",
+    "title": "Files and folders",
+    "heading": "File and folder icons",
+    "intro": "File and folder icons for document lists, file browsers and upload fields. The set has documents and folders with add and remove variants, plus an archive box, a package, a book, a bookmark and a paperclip for attachments.",
+    "icons": ["document", "document-text", "document-add", "document-minus", "folder", "folder-open", "folder-add", "folder-minus", "archive", "package", "book", "bookmark", "attachment"]
+  },
+  {
+    "slug": "communication",
+    "title": "Communication",
+    "heading": "Communication icons",
+    "intro": "Communication icons for messaging, email, notifications and contact details. The set covers mail, an inbox, a send arrow, a chat bubble, a phone, the at sign, notification bells, a globe, a map pin and wifi.",
+    "icons": ["mail", "inbox", "send", "chat-bubble", "phone", "at-sign", "bell", "bell-off", "globe", "pin", "wifi"]
+  },
+  {
+    "slug": "media",
+    "title": "Media",
+    "heading": "Media icons",
+    "intro": "Media icons for audio and video players, cameras and photo galleries. The set has play, pause, stop and a combined play and pause control, a camera, a video camera, a picture, microphone and volume icons with muted variants, and an exposure control.",
+    "icons": ["play", "pause", "play-pause", "stop", "camera", "video", "picture", "mic", "mic-off", "volume", "volume-off", "exposure"]
+  },
+  {
+    "slug": "people",
+    "title": "People and reactions",
+    "heading": "People and reaction icons",
+    "intro": "People icons for accounts, profiles, teams and member lists, and reaction icons for feedback and ratings. The set covers one user, a user being added or removed, a group, the accessibility symbol, a smile, thumbs up and down, a heart and a star.",
+    "icons": ["user", "user-add", "user-minus", "users", "accessibility", "smile", "thumbs-up", "thumbs-down", "heart", "star"]
+  },
+  {
+    "slug": "development",
+    "title": "Development",
+    "heading": "Developer icons",
+    "intro": "Developer icons for documentation sites, dev tools and technical dashboards. The set covers code, a terminal, curly braces, a bug, the command key, a CPU, a database, a server, a plug, the hash sign and four git icons for branch, commit, merge and pull request.",
+    "icons": ["code", "terminal", "braces", "bug", "command", "cpu", "database", "server", "plug", "hash", "git-branch", "git-commit", "git-merge", "git-pull-request"]
+  },
+  {
+    "slug": "status",
+    "title": "Status and security",
+    "heading": "Status and security icons",
+    "intro": "Status icons for alerts, validation messages and empty states, and security icons for login and privacy settings. The set has warning, error, information, help and success markers, a loading spinner, a flag, a shield, a key, a lock and an unlock, and show and hide eyes for password fields.",
+    "icons": ["warning", "alert-octagon", "information", "help-circle", "check-circle", "loading", "flag", "shield", "key", "lock", "unlock", "eye-open", "eye-off"]
+  },
+  {
+    "slug": "business",
+    "title": "Business and charts",
+    "heading": "Business and chart icons",
+    "intro": "Business icons for dashboards, reports, stores and landing pages. The set covers bar, line and pie charts, trend arrows in both directions, coins, a credit card, a shopping cart, a price tag, an office building, a rocket, a lightbulb and a sparkle.",
+    "icons": ["chart", "chart-line", "pie", "trending-up", "trending-down", "coins", "credit-card", "shopping-cart", "tag", "building", "rocket", "lightbulb", "sparkle"]
+  },
+  {
+    "slug": "time-weather",
+    "title": "Time and weather",
+    "heading": "Time and weather icons",
+    "intro": "Time icons for calendars, schedules and activity logs, and weather icons for forecasts and theme switches. The set has a calendar, a calendar with an add mark, a clock, a history clock, a sun, a moon, a cloud, rain, a rainbow, a water drop and a lightning bolt.",
+    "icons": ["calendar", "calendar-add", "clock", "history", "sun-bright", "moon", "cloud", "rain", "rainbow", "tear-drop", "bolt"]
+  }
+]

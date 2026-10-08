@@ -1,0 +1,55 @@
+<main class="page">
+
+  <div class="hero">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/">Quick Start Icons</a></li>
+        <li><a href="/categories/{{CAT_SLUG}}/">{{CAT_TITLE}}</a></li>
+        <li><span aria-current="page">{{NAME}}</span></li>
+      </ol>
+    </nav>
+    <h1>{{HEADING}}</h1>
+    <p class="deck">{{DECK}}</p>
+  </div>
+
+  <div class="body">
+
+{{PANEL}}
+
+    <div class="detail">
+
+      <div class="stage" data-name="{{NAME}}">
+        <div class="glyph">{{GLYPH}}</div>
+      </div>
+
+      <section class="doc doc-wide" aria-labelledby="code-h">
+        <h2 id="code-h">SVG code</h2>
+        <p>The markup below is the file that Copy and Download give you. It changes when you move the controls.</p>
+<pre class="code"><code id="code" data-name="{{NAME}}">{{CODE}}</code></pre>
+      </section>
+
+      <section class="doc" aria-labelledby="cdn-h">
+        <h2 id="cdn-h">Use it from a CDN</h2>
+        <p>jsDelivr serves this icon from the GitHub repository. No account and no install.</p>
+<pre class="code"><code>{{CDN_URL}}</code></pre>
+<pre class="code"><code>&lt;img src="{{CDN_URL}}" width="24" height="24" alt=""&gt;</code></pre>
+        <p>The CDN file is the authored source: rounded corners, a stroke weight of 2, and no width or height. An image tag draws it in black. Paste the markup inline to color it with CSS.</p>
+      </section>
+
+      <section class="doc" aria-labelledby="terms-h">
+        <h2 id="terms-h">Also found under</h2>
+        <p class="terms">{{ALIASES}}</p>
+        <p>Search for any of these words on the <a href="/">home page</a> to find this icon. It is in the <a href="/categories/{{CAT_SLUG}}/">{{CAT_TITLE_LOWER}}</a> category. The license is <a href="/#license">MIT</a>, free for personal and commercial use, with no attribution required.</p>
+      </section>
+
+      <section class="doc doc-wide" aria-labelledby="related-h">
+        <h2 id="related-h">Related icons</h2>
+        <ul class="related">
+{{RELATED}}
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+</main>

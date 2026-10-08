@@ -1,6 +1,6 @@
 # Quick Start Icons
 
-170 open source SVG icons with a live stroke weight and a corner toggle.
+170 open source SVG icons. Set the stroke weight and the corners, then copy. Free forever for both personal and commercial use.
 
 <!-- Static badges only: shields.io's GitHub-API badges fail intermittently
      ("Unable to select next GitHub token from pool"). Bump the count by hand. -->
@@ -10,11 +10,11 @@
 
 ![Quick Start Icons](site/page/og.png)
 
-Quick Start Icons is a set of outline icons for people scaffolding a new project. Every icon is drawn by hand as a live stroke on a 32 by 32 canvas, so the stroke weight and the corner style are controls on the site rather than separate downloads. Set them, then copy one icon or download all 170. No npm package, no icon font, no runtime.
+Quick Start Icons is a free, open source set of outline icons for people scaffolding a new project. Every icon is drawn by hand as a live stroke on a 32 by 32 canvas, so the stroke weight and the corner style are controls on the site rather than separate downloads. Set them, then copy one icon or download all 170. No npm package, no icon font, no runtime.
 
 ## Use them
 
-Grab an icon from **[the site](https://icons.evanpizzolato.com)**, or take the SVG straight from [`src/`](src). Each file is complete and self-contained:
+Grab an icon from **[the site](https://icons.evanpizzolato.com)**, or take the SVG straight from [`src/`](src). Every icon has its own page at `icons.evanpizzolato.com/icons/<name>/`, and the icons are grouped into 12 categories, such as [arrows](https://icons.evanpizzolato.com/categories/arrows/) and [development](https://icons.evanpizzolato.com/categories/development/). Each file is complete and self-contained:
 
 ```html
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -26,6 +26,16 @@ Grab an icon from **[the site](https://icons.evanpizzolato.com)**, or take the S
 ```
 
 The stroke is `currentColor`, so an icon inherits the CSS `color` of its parent and follows a theme change without a second copy.
+
+### From a CDN
+
+jsDelivr serves every file in `src/` with no account and no install:
+
+```html
+<img src="https://cdn.jsdelivr.net/gh/evanpizzolato/quick-start-icons/src/bell.svg" width="24" height="24" alt="">
+```
+
+The CDN file is the authored source: rounded corners and a stroke weight of 2. An `<img>` draws it in black, because an image cannot inherit the page's CSS `color`. Paste the markup inline to color it, or use the URL as a CSS `mask-image`.
 
 ## How the two controls work
 
@@ -59,11 +69,11 @@ cd site/dist && python3 -m http.server 8787
 
 Serve it rather than opening `dist/index.html` directly. `file://` is not a secure context, so `navigator.clipboard` is unavailable there.
 
-`site/build.mjs` is the only build step and has no dependencies. It reads `src/*.svg`, inlines all 170 into one static page, and writes `robots.txt`, `sitemap.xml` and `llms.txt` beside it. See [`site/README.md`](site/README.md) for the details.
+`site/build.mjs` is the only build step and has no dependencies. It reads `src/*.svg`, `src/aliases.json` and `src/categories.json`, and writes 184 static pages: the home page, 12 category pages, 170 icon pages and a 404 page. It also writes a plain SVG and a markdown copy for each icon, `robots.txt`, `sitemap.xml`, `llms.txt` and `llms-full.txt`. `node site/check.mjs` then checks the output. See [`site/README.md`](site/README.md) for the details.
 
 ## Contributing an icon
 
-Read [`SPEC.md`](SPEC.md) first. It covers the canvas, the identical root every file carries, the corner rules, and when a shape needs a real fillet rather than a round line join. The build refuses any source whose root does not match, so a file that violates the spec fails loudly rather than shipping.
+Read [`SPEC.md`](SPEC.md) first. It covers the canvas, the identical root every file carries, the corner rules, and when a shape needs a real fillet rather than a round line join. A new icon also needs 3 to 8 search terms in `src/aliases.json`, a place in one category in `src/categories.json`, and a social card from `node site/make-og.mjs <name>`. The build refuses a source whose root does not match, and it fails when an icon has no aliases, no category or no card.
 
 ## License
 

@@ -114,6 +114,19 @@ Everything else is fair game, including the shapes that resolve to circles at ra
 - One concept per file. `kebab-case.svg` filenames; the Figma component name is the camelCase equivalent.
 - Keep the path count low. Fewer, longer paths beat many fragments.
 
+## Metadata
+
+Every icon needs two entries beside its SVG. The build fails when either is missing.
+
+| File | What it holds | Rule |
+|---|---|---|
+| `src/aliases.json` | Search terms, such as `"bell": ["notification", "alert", "reminder"]` | 3 to 8 per icon, lowercase, plain words people type. Do not repeat the icon's own name. |
+| `src/categories.json` | 12 groups, each with a slug, a title, a heading, an intro paragraph and a list of icon names | Each icon is in exactly one category. |
+
+The site search reads the aliases. The aliases also appear as visible text on each icon page, in its markdown copy and in `llms-full.txt`. The first three are used in the page description, so put the most common term first.
+
+A new icon also needs a social card. Run `node site/make-og.mjs <name>`, which needs Chrome, and commit the PNG it writes to `site/page/og/`.
+
 ## File template
 
 ```svg

@@ -1,56 +1,51 @@
-/* Quick Start Icons
-   ------------------------------------------------------------------
-   State is four values: weight, corners, query, and nothing else. The live
-   preview is two CSS custom properties, so moving the weight slider writes to
-   one element and 170 icons repaint. The only place the SVG is rebuilt as text
-   is copy and download, and there is exactly one function that does it, so
-   there is exactly one definition of what a Quick Start icon file looks like.
-   ------------------------------------------------------------------ */
+// Quick Start Icons: one script for the home page, the category pages and the icon pages.
 (() => {
   "use strict";
 
   const EXPORT_SIZE = 24; // an SVG with no intrinsic size renders 300x150 in HTML
-  // Sources are authored at weight 2 and rounded; the page opens at 1.25 and square, and Reset returns here.
+  // Sources are authored at weight 2 and rounded, and the page opens at 1.25 and square.
   const DEFAULTS = { weight: 1.25, corners: "square" };
 
+  const $ = (id) => document.getElementById(id);
   const root = document.documentElement;
-  const grid = document.getElementById("grid");
-  const cards = [...grid.querySelectorAll(".card")];
-  const search = document.getElementById("search");
-  const weight = document.getElementById("weight");
-  const weightOut = document.getElementById("weight-out");
+  const cards = [...document.querySelectorAll(".card")];
+  const search = $("search");
+  const weight = $("weight");
+  const weightOut = $("weight-out");
   const cornerBtns = [...document.querySelectorAll("[data-corners]")];
-  const count = document.getElementById("count");
-  const empty = document.getElementById("empty");
-  const live = document.getElementById("live");
+  const count = $("count");
+  const empty = $("empty");
+  const live = $("live");
+  const code = $("code");
+  const sheet = $("sheet");
 
   const state = { ...DEFAULTS };
 
-  /* Every card indexed once: name plus its hyphen-split words, so "pull" finds
-     git-pull-request without any alias metadata existing yet. */
+  // Each card is indexed once by its name, the words in its name, and its aliases.
   const index = cards.map((el) => ({
     el,
     name: el.dataset.name,
-    haystack: el.dataset.name + " " + el.dataset.name.split("-").join(" "),
+    haystack: [el.dataset.name, el.dataset.name.split("-").join(" "), el.dataset.terms || ""].join(" "),
   }));
 
   /* ---------- live preview ---------- */
 
-  /* CSS geometry properties (rx on a rect) are not universal on older Safari.
-     Where they are missing, write the attribute instead: 41 rects across 32
-     files, so the fallback costs nothing measurable. */
+  // Older Safari lacks CSS rx on a rect, so the attribute is written instead.
   const cssRxWorks = CSS.supports("rx", "1px");
-  const scalableRects = cssRxWorks
-    ? []
-    : [...grid.querySelectorAll('.glyph > svg rect:not([data-radius="fixed"])')];
+  const scalableRects = cssRxWorks ? [] : [...document.querySelectorAll('.glyph > svg rect:not([data-radius="fixed"])')];
 
   // The build ships each arc-cornered path squared, with the authored `d` in data-d-round.
-  const swappablePaths = [...grid.querySelectorAll(".glyph > svg path[data-d-round]")];
+  const swappablePaths = [...document.querySelectorAll(".glyph > svg path[data-d-round]")];
   for (const path of swappablePaths) path.dataset.dSquare = path.getAttribute("d");
+
+  const renderCode = () => {
+    if (code) code.textContent = svgText(code.dataset.name).trimEnd();
+  };
 
   function applyWeight() {
     root.style.setProperty("--qs-weight", String(state.weight));
-    weightOut.textContent = String(state.weight);
+    if (weightOut) weightOut.textContent = String(state.weight);
+    renderCode();
   }
 
   function applyCorners() {
@@ -59,23 +54,21 @@
     root.style.setProperty("--qs-join", state.corners === "rounded" ? "round" : "miter");
     const key = state.corners === "rounded" ? "dRound" : "dSquare";
     for (const path of swappablePaths) path.setAttribute("d", path.dataset[key]);
-    if (!cssRxWorks) {
-      for (const rect of scalableRects) {
-        const base = parseFloat(rect.style.getPropertyValue("--base-rx")) || 0;
-        rect.setAttribute("rx", String(base * scale));
-      }
+    for (const rect of scalableRects) {
+      const base = parseFloat(rect.style.getPropertyValue("--base-rx")) || 0;
+      rect.setAttribute("rx", String(base * scale));
     }
     for (const btn of cornerBtns) {
       btn.setAttribute("aria-checked", String(btn.dataset.corners === state.corners));
     }
+    renderCode();
   }
 
   /* ---------- serialization: the one definition of the output file ---------- */
 
+  // site/icons.mjs fileText() mirrors this function, and check.mjs compares the two.
   function svgText(name) {
-    /* Child combinator: the download button's own chrome icon is also an svg
-       inside .glyph, and only document order kept this from picking it. */
-    const source = grid.querySelector(`.card[data-name="${name}"] .glyph > svg`);
+    const source = document.querySelector(`[data-name="${name}"] .glyph > svg`);
     const clone = source.cloneNode(true);
     const scale = state.corners === "rounded" ? 1 : 0;
 
@@ -83,15 +76,13 @@
       const base = parseFloat(rect.style.getPropertyValue("--base-rx"));
       rect.removeAttribute("style"); // --base-rx is a build helper, not output
       if (rect.hasAttribute("data-radius")) {
-        rect.removeAttribute("data-radius"); // authoring metadata, stays in the repo
-        continue; // and its rx is deliberately untouched
+        rect.removeAttribute("data-radius"); // its rx carries the meaning and stays as authored
+        continue;
       }
       if (!Number.isNaN(base)) rect.setAttribute("rx", trim(base * scale));
     }
 
-    /* The live `d` is already the right one, since applyCorners swapped it.
-       Drop the build helpers so the file matches src/ apart from the geometry
-       the controls actually changed. */
+    // applyCorners already set the live `d`, so only the build helpers come off.
     const geometry = [...clone.children].map((el) => {
       el.removeAttribute("data-d-square");
       el.removeAttribute("data-d-round");
@@ -158,10 +149,10 @@
     requestAnimationFrame(() => { live.textContent = message; });
   }
 
-  grid.addEventListener("click", async (event) => {
+  document.addEventListener("click", async (event) => {
     const btn = event.target.closest("[data-act]");
     if (!btn) return;
-    const name = btn.closest(".card").dataset.name;
+    const name = btn.closest("[data-name]").dataset.name;
     const text = svgText(name);
 
     if (btn.dataset.act === "copy") {
@@ -184,95 +175,91 @@
       item.el.hidden = !hit;
       if (hit) shown++;
     }
-    count.textContent = query
-      ? `${shown} of ${index.length} icons`
-      : `${index.length} icons`;
+    count.textContent = query ? `${shown} of ${index.length} icons` : `${index.length} icons`;
     empty.hidden = shown > 0;
     announce(query ? `${shown} icons match ${query}` : `${index.length} icons`);
   }
 
-  let pending;
-  search.addEventListener("input", () => {
-    clearTimeout(pending);
-    pending = setTimeout(filter, 90);
-  });
+  if (search) {
+    let pending;
+    search.addEventListener("input", () => {
+      clearTimeout(pending);
+      pending = setTimeout(filter, 90);
+    });
 
-  document.getElementById("clear").addEventListener("click", () => {
-    search.value = "";
-    filter();
-    search.focus();
-  });
+    $("clear").addEventListener("click", () => {
+      search.value = "";
+      filter();
+      search.focus();
+    });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key !== "/" || event.metaKey || event.ctrlKey) return;
-    const tag = document.activeElement?.tagName;
-    if (tag === "INPUT" || tag === "TEXTAREA") return;
-    /* Behind an open modal the search box is inert, so focusing it would fail
-       while preventDefault still ate the key. Leave the key alone. */
-    if (document.getElementById("sheet").open) return;
-    event.preventDefault();
-    search.focus();
-    search.select();
-  });
-
-  /* ---------- the docs sheet ----------
-     The markup is already in the page from build time. Nothing here fetches or
-     renders it; the dialog only decides whether it is on screen. showModal, not
-     show, for the focus trap and Escape. Its backdrop is transparent in CSS. */
-
-  const sheet = document.getElementById("sheet");
-  const sheetBody = sheet.querySelector(".sheet-body");
-  /* Scroll behaviour is set per call, not in CSS, so check the query here. */
-  const REDUCED_MOTION = matchMedia("(prefers-reduced-motion: reduce)");
-
-  /* Not scrollIntoView: it scrolls every scrollable ancestor, and the dialog
-     counts as one, which dragged the header off the top. Move one box by hand. */
-  const SCROLL_GAP = 24;
-
-  const scrollToSection = (target, smooth) => {
-    const top =
-      sheetBody.scrollTop +
-      target.getBoundingClientRect().top -
-      sheetBody.getBoundingClientRect().top -
-      SCROLL_GAP;
-    sheetBody.scrollTo({ top: Math.max(0, top), behavior: smooth ? "smooth" : "auto" });
-  };
-
-  const openSheet = (id) => {
-    /* Jump when the sheet is opening, animate when it is already up. Smooth
-       scrolling in a box that just appeared reads as a glitch. */
-    const wasOpen = sheet.open;
-    if (!wasOpen) sheet.showModal();
-    const target = document.getElementById(id);
-    if (target) scrollToSection(target, wasOpen && !REDUCED_MOTION.matches);
-  };
-
-  for (const btn of document.querySelectorAll("[data-sheet]")) {
-    btn.addEventListener("click", () => openSheet(btn.dataset.sheet));
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "/" || event.metaKey || event.ctrlKey) return;
+      const tag = document.activeElement?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      // Behind an open modal the search box is inert, so the key is left alone.
+      if (sheet?.open) return;
+      event.preventDefault();
+      search.focus();
+      search.select();
+    });
   }
 
-  document.getElementById("sheet-close").addEventListener("click", () => sheet.close());
+  /* ---------- the docs sheet ---------- */
 
-  /* Every child fills the dialog, so a click on the element itself is a click
-     outside. That is what the margin around the sheet is for. */
-  sheet.addEventListener("click", (event) => {
-    if (event.target === sheet) sheet.close();
-  });
+  // The header links go to /#about and friends, and on the home page they open the sheet instead.
+  if (sheet) {
+    const sheetBody = sheet.querySelector(".sheet-body");
+    const REDUCED_MOTION = matchMedia("(prefers-reduced-motion: reduce)");
+    const SCROLL_GAP = 24;
 
-  /* ---------- the year ----------
-     Build time writes it so it is right without script. This corrects it when
-     the page is read in a later year. Two spots: footer and licence. */
+    // Not scrollIntoView, which also scrolls the dialog and drags the header off the top.
+    const scrollToSection = (target, smooth) => {
+      const top = sheetBody.scrollTop + target.getBoundingClientRect().top - sheetBody.getBoundingClientRect().top - SCROLL_GAP;
+      sheetBody.scrollTo({ top: Math.max(0, top), behavior: smooth ? "smooth" : "auto" });
+    };
 
+    // Jump when the sheet is opening and animate when it is already up.
+    const openSheet = (id) => {
+      const target = document.getElementById(id);
+      if (!target || !sheet.contains(target)) return false;
+      const wasOpen = sheet.open;
+      if (!wasOpen) sheet.showModal();
+      scrollToSection(target, wasOpen && !REDUCED_MOTION.matches);
+      return true;
+    };
+
+    for (const link of document.querySelectorAll("[data-sheet]")) {
+      link.addEventListener("click", (event) => {
+        if (openSheet(link.dataset.sheet)) event.preventDefault();
+      });
+    }
+
+    $("sheet-close").addEventListener("click", () => sheet.close());
+
+    // A click on the dialog element itself lands in its margin, which is outside the sheet.
+    sheet.addEventListener("click", (event) => {
+      if (event.target === sheet) sheet.close();
+    });
+
+    // A link from another page arrives as /#faq, so the sheet opens on that section.
+    if (location.hash) openSheet(decodeURIComponent(location.hash.slice(1)));
+    sheet.addEventListener("close", () => {
+      if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    });
+  }
+
+  // The build writes the year, and this corrects it when the page is read in a later year.
   for (const el of document.querySelectorAll("[data-year]")) {
     el.textContent = String(new Date().getFullYear());
   }
 
   /* ---------- controls ---------- */
 
-  /* A range fires input roughly per pixel of drag, and every one of those wrote
-     --qs-weight on :root, which repaints 651 SVG children. Coalesce to one
-     write per frame. The search box next to it was already debounced; this was
-     the control that was not. */
+  // The 404 page has no controls, so everything below is skipped there.
+  if (!weight) return;
+
+  // A range fires input about once per pixel of drag, so writes are coalesced to one per frame.
   let weightFrame = 0;
   weight.addEventListener("input", () => {
     state.weight = parseFloat(weight.value);
@@ -291,19 +278,21 @@
     });
   }
 
-  document.getElementById("reset").addEventListener("click", () => {
+  $("reset").addEventListener("click", () => {
     Object.assign(state, DEFAULTS);
     weight.value = String(DEFAULTS.weight);
-    search.value = "";
     applyWeight();
     applyCorners();
-    filter();
+    if (search) {
+      search.value = "";
+      filter();
+    }
     announce("Reset");
   });
 
-  /* ---------- download all ----------
-     A store-only zip, written by hand so the page has no dependencies. No
-     compression, so roughly 60 KB rather than 15, which nobody will notice. */
+  /* ---------- download all ---------- */
+
+  // A store-only zip, written by hand so the page has no dependencies.
 
   const CRC_TABLE = (() => {
     const table = new Uint32Array(256);
@@ -385,15 +374,16 @@
     });
   }
 
-  document.getElementById("download-all").addEventListener("click", (event) => {
-    const entries = index.map((item) => ({
-      name: `quick-start-icons/${item.name}.svg`,
-      text: svgText(item.name),
-    }));
-    save(zipStore(entries), "quick-start-icons.zip");
-    flash(event.currentTarget, "Downloaded");
-    announce(`Downloaded ${entries.length} icons`);
-  });
+  const downloadAll = $("download-all");
+  if (downloadAll) {
+    downloadAll.addEventListener("click", () => {
+      const folder = downloadAll.dataset.zip;
+      const entries = index.map((item) => ({ name: `${folder}/${item.name}.svg`, text: svgText(item.name) }));
+      save(zipStore(entries), `${folder}.zip`);
+      flash(downloadAll, "Downloaded");
+      announce(`Downloaded ${entries.length} icons`);
+    });
+  }
 
   /* ---------- go ---------- */
 
