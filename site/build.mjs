@@ -19,6 +19,8 @@ const AUTHOR = "Evan Pizzolato";
 const REPO_URL = "https://github.com/evanpizzolato/quick-start-icons";
 const CDN = "https://cdn.jsdelivr.net/gh/evanpizzolato/quick-start-icons/src";
 const AUTHOR_SAME_AS = ["https://github.com/evanpizzolato"];
+// Bing Webmaster Tools ownership tag, which must stay on the home page after verification.
+const BING_SITE_AUTH = "C5619139927EDADDCA0ADDB81DE34EF9";
 const YEAR = new Date().getFullYear();
 // Local date, to match the committer dates git reports for lastmod.
 const TODAY = new Date().toLocaleDateString("en-CA");
@@ -461,6 +463,7 @@ const homeHtml = page({
   description: `${COUNT} open source SVG icons with live stroke weight and corner controls. Copy or download any icon, or the whole set as a zip. MIT licensed, free for commercial use.`,
   ogDescription: `Set the stroke weight and the corners, then copy. ${COUNT} MIT licensed SVG icons, free for personal and commercial use.`,
   jsonLd: homeJsonLd,
+  headExtra: `<meta name="msvalidate.01" content="${BING_SITE_AUTH}">`,
   main: fill(homeSource.slice(0, splitAt), homeSlots),
   after: fill(homeSource.slice(splitAt), homeSlots),
 });
