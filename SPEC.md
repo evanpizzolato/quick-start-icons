@@ -80,7 +80,9 @@ Two consequences for authoring:
 - **A stroke that ends on another path's fillet needs its own squared value.**
   `send`'s fold line stops on the tip fillet, so it has no arc to work back from.
   Such a path carries **`data-d-square`** stating its squared geometry outright,
-  and the build uses it instead of deriving one. One path uses this so far.
+  and the build uses it instead of deriving one. Two paths use it: `send`'s fold
+  line, and `exposure`'s diagonal, which ends on the rounded frame corner at
+  Rounded and on the square corner at Square.
 
 **A path marked `data-corner="fixed"` is skipped**, the direct counterpart of
 `data-radius="fixed"` on a rect. It exists because the test for "this arc is a

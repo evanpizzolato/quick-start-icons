@@ -39,7 +39,7 @@ Every source carries its presentation attributes on the root element and nothing
 |---|---|---|
 | `rect[rx]` | 41 rects | one CSS rule reading a `--base-rx` set at build time |
 | `stroke-linejoin="round"` | every straight-to-straight join | `stroke-linejoin: miter` |
-| an explicit arc in the path data | 131 arcs across 58 paths | `site/square-path.mjs`, at build time |
+| an explicit arc in the path data | 130 arcs across 58 paths | `site/square-path.mjs`, at build time |
 
 `stroke-linecap` stays `round` in both modes and is not a dial: 24 dots across 14 icons are authored as `<path d="M9 16h.01"/>` and only exist because a round cap draws them.
 

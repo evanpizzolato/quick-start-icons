@@ -29,7 +29,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1a1a'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='monospace' font-size='15' font-weight='600' fill='%23dfdfe5'%3EQS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="preload" href="fonts/PaperMono.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 
 <script type="application/ld+json">{{JSONLD}}</script>
@@ -88,8 +89,8 @@
         <div class="field field-corners">
           <span class="label" id="corners-label">Corners</span>
           <div class="segmented" role="radiogroup" aria-labelledby="corners-label">
-            <button type="button" role="radio" aria-checked="true" data-corners="rounded">Rounded</button>
-            <button type="button" role="radio" aria-checked="false" data-corners="square">Square</button>
+            <button type="button" role="radio" aria-checked="true" data-corners="square">Square</button>
+            <button type="button" role="radio" aria-checked="false" data-corners="rounded">Rounded</button>
           </div>
         </div>
 
@@ -149,7 +150,7 @@
       </p>
       <ol class="steps">
         <li><strong>Set the stroke weight.</strong> The slider runs from 1 to 3 in steps of 0.25. The default is 1.25.</li>
-        <li><strong>Choose the corners.</strong> Rounded or square, applied to all {{COUNT}} icons at once.</li>
+        <li><strong>Choose the corners.</strong> Square or rounded, applied to all {{COUNT}} icons at once. The default is square.</li>
         <li><strong>Find the icon.</strong> Type in the search box, or press <kbd>/</kbd> from anywhere on the page.</li>
         <li><strong>Copy or download.</strong> Copy puts the SVG markup on your clipboard. The download button in the corner of an icon saves a single <code>.svg</code>. Download all saves the whole set as a zip.</li>
         <li><strong>Paste it.</strong> Inline SVG works in HTML, JSX, Vue, Svelte, and Figma. No build step and no package to add.</li>
@@ -161,7 +162,7 @@
       </p>
 <pre class="code"><code>&lt;svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
      viewBox="0 0 32 32" fill="none" stroke="currentColor"
-     stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"&gt;
+     stroke-width="1.25" stroke-linecap="round" stroke-linejoin="miter"&gt;
   &lt;path d="M16 6L16 26"/&gt;
   &lt;path d="M6 16L26 16"/&gt;
 &lt;/svg&gt;</code></pre>
@@ -184,7 +185,7 @@
             <tr><th scope="row">Canvas</th><td>32 by 32 viewBox, exported at 24 by 24</td></tr>
             <tr><th scope="row">Style</th><td>Outline, live strokes, no filled paths</td></tr>
             <tr><th scope="row">Stroke weight</th><td>Adjustable from 1 to 3, default 1.25</td></tr>
-            <tr><th scope="row">Corners</th><td>Rounded or square, both derived from the same source</td></tr>
+            <tr><th scope="row">Corners</th><td>Square or rounded, default square, both derived from the same source</td></tr>
             <tr><th scope="row">Color</th><td><code>currentColor</code>, inherits the CSS <code>color</code> of its parent</td></tr>
             <tr><th scope="row">License</th><td>MIT</td></tr>
             <tr><th scope="row">Dependencies</th><td>None. No npm package, no font file, no runtime.</td></tr>

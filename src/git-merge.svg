@@ -4,5 +4,5 @@
   <circle cx="9" cy="25" r="3"/>
   <circle cx="23" cy="16" r="3"/>
   <path d="M9 10v12"/>
-  <path d="M20 16h-2a9 9 0 0 1-9-9"/>
+  <path d="M9 10a6 6 0 0 0 6 6h5"/>
 </svg>

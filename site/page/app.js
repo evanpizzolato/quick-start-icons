@@ -10,10 +10,8 @@
   "use strict";
 
   const EXPORT_SIZE = 24; // an SVG with no intrinsic size renders 300x150 in HTML
-  /* The sources are authored at stroke-width 2, per SPEC.md. The site opens at
-     1.25 because that is the weight the set looks best at on screen. Reset
-     returns here, not to 2. */
-  const DEFAULTS = { weight: 1.25, corners: "rounded" };
+  // Sources are authored at weight 2 and rounded; the page opens at 1.25 and square, and Reset returns here.
+  const DEFAULTS = { weight: 1.25, corners: "square" };
 
   const root = document.documentElement;
   const grid = document.getElementById("grid");
@@ -46,11 +44,9 @@
     ? []
     : [...grid.querySelectorAll('.glyph > svg rect:not([data-radius="fixed"])')];
 
-  /* Path corners authored as quarter-turn arcs cannot be reached by CSS, so the
-     build carried a derived squared `d` on each affected path. Stash the
-     authored one on first use rather than shipping both copies in the HTML. */
-  const swappablePaths = [...grid.querySelectorAll(".glyph > svg path[data-d-square]")];
-  for (const path of swappablePaths) path.dataset.dRound = path.getAttribute("d");
+  // The build ships each arc-cornered path squared, with the authored `d` in data-d-round.
+  const swappablePaths = [...grid.querySelectorAll(".glyph > svg path[data-d-round]")];
+  for (const path of swappablePaths) path.dataset.dSquare = path.getAttribute("d");
 
   function applyWeight() {
     root.style.setProperty("--qs-weight", String(state.weight));
@@ -146,14 +142,15 @@
 
   function flash(btn, label) {
     const slot = btn.querySelector(".btn-label");
-    const previous = slot ? slot.textContent : null;
+    // Keep the resting label once, so a second click inside the window cannot store "Copied" as it.
+    if (slot && !btn.dataset.label) btn.dataset.label = slot.textContent;
     btn.classList.add("is-done");
     if (slot) slot.textContent = label;
     clearTimeout(btn._t);
     btn._t = setTimeout(() => {
       btn.classList.remove("is-done");
-      if (slot) slot.textContent = previous;
-    }, 2000);
+      if (slot) slot.textContent = btn.dataset.label;
+    }, 3000);
   }
 
   function announce(message) {
@@ -169,7 +166,7 @@
 
     if (btn.dataset.act === "copy") {
       const ok = await copy(text);
-      flash(btn, ok ? "Copied!" : "Failed");
+      flash(btn, ok ? "Copied" : "Failed");
       announce(ok ? `Copied ${name}.svg` : `Could not copy ${name}.svg`);
     } else {
       save(new Blob([text], { type: "image/svg+xml" }), `${name}.svg`);

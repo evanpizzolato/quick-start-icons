@@ -60,6 +60,10 @@ let fixedPaths = 0;
 let authoredSquares = 0;
 const icons = [];
 
+// Square is the default corner style, so the squared geometry is the live `d`.
+const squareByDefault = (tag, round, square) =>
+  tag.replace(`d="${round}"`, `d="${square}"`).replace(/\/>$/, ` data-d-round="${round}"/>`);
+
 for (const file of files) {
   const name = file.replace(/\.svg$/, "");
   const raw = readFileSync(join(SRC, file), "utf8");
@@ -89,30 +93,26 @@ for (const file of files) {
       return tag.replace(/\/>$/, ` style="--base-rx:${rx[1]}"/>`);
     }
 
-    /* A path corner authored as an explicit arc is baked geometry, so no CSS
-       property reaches it. Derive the squared alternative here and carry it as
-       data-d-square; app.js swaps `d` on the toggle. */
+    /* An arc corner is baked geometry no CSS reaches, so the page ships the squared `d` (the default) and carries the authored one as data-d-round. */
     if (!tag.startsWith("<path")) return tag;
     if (tag.includes('data-corner="fixed"')) {
       fixedPaths++;
       return tag.replace(/ data-corner="fixed"/, ""); // authoring metadata, not output
     }
-    /* A path may also state its own squared geometry, for the case derivation
-       cannot reach: a stroke that stops on a fillet belonging to another path
-       has no arc of its own to work back from. `send`'s fold line is the only
-       one so far. */
-    if (tag.includes("data-d-square=")) {
-      authoredSquares++;
-      squaredPaths++;
-      return tag;
-    }
+    // An authored data-d-square covers a stroke that ends on another path's fillet, such as `send`'s fold line.
     const d = tag.match(/\bd="([^"]+)"/);
     if (!d) return tag;
+    const authored = tag.match(/ data-d-square="([^"]+)"/);
+    if (authored) {
+      authoredSquares++;
+      squaredPaths++;
+      return squareByDefault(tag.replace(authored[0], ""), d[1], authored[1]);
+    }
     const result = squarePath(d[1]);
     if (!result) return tag;
     squaredArcs += result.squared;
     squaredPaths++;
-    return tag.replace(/\/>$/, ` data-d-square="${result.d}"/>`);
+    return squareByDefault(tag, d[1], result.d);
   });
 
   icons.push({ name, geometry });
@@ -134,16 +134,25 @@ const glyph = (geometry) =>
    They live outside .glyph, so the controls do not reach them, and they never
    need serializing, which is the only thing <use> would have made awkward. */
 const UI_ICONS = ["copy", "download", "search", "close", "refresh"];
+// Chrome icons drawn in the square style rather than the authored rounded one.
+const SQUARE_UI = new Set(["copy"]);
 
 const sprite = () =>
   `<svg class="sprite" aria-hidden="true"><defs>` +
   UI_ICONS.map((name) => {
     const icon = icons.find((i) => i.name === name);
     if (!icon) throw new Error(`UI icon "${name}" is not in src/`);
-    const geometry = icon.geometry.map((t) => t.replace(/ style="[^"]*"/, "")).join("");
+    const square = SQUARE_UI.has(name);
+    const geometry = icon.geometry
+      .map((t) => {
+        t = t.replace(/ style="[^"]*"/, "");
+        if (!square) return t.replace(/ d="[^"]*" data-d-round="([^"]*)"/, ' d="$1"');
+        return t.replace(/ data-d-round="[^"]*"/, "").replace(/(<rect(?![^>]*data-radius)[^>]*) rx="[^"]*"/, "$1");
+      })
+      .join("");
     return (
       `<symbol id="ui-${name}" viewBox="0 0 32 32" fill="none" stroke="currentColor" ` +
-      `stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${geometry}</symbol>`
+      `stroke-width="2" stroke-linecap="round" stroke-linejoin="${square ? "miter" : "round"}">${geometry}</symbol>`
     );
   }).join("") +
   `</defs></svg>`;
@@ -196,7 +205,7 @@ const FAQ = [
   ],
   [
     `What does the corners toggle do?`,
-    `It switches every icon between rounded and square corners. Corners are authored three
+    `It switches every icon between square and rounded corners. Square is the default. Corners are authored three
      ways in SVG, as a rect radius, as a stroke line join, and as an arc inside the path
      data, and the toggle reaches all three. Both states come from the same source file, so
      the two are always in step.`,
@@ -290,7 +299,7 @@ const jsonLd = {
       featureList: [
         `${COUNT} outline SVG icons`,
         "Stroke weight adjustable from 1 to 3",
-        "Rounded or square corners",
+        "Square or rounded corners",
         "Copy to clipboard or download a single SVG",
         "Download the whole set as a zip",
         "currentColor stroke, no hard coded hex",
@@ -320,7 +329,7 @@ const jsonLd = {
       totalTime: "PT1M",
       step: [
         ["Set the stroke weight", "Move the slider between 1 and 3. All icons repaint together."],
-        ["Choose the corners", "Switch between rounded and square corners for the whole set."],
+        ["Choose the corners", "Switch between square and rounded corners for the whole set. Square is the default."],
         ["Find the icon", "Type in the search box, or press the slash key from anywhere on the page."],
         ["Copy or download", "Copy puts the SVG markup on the clipboard. Download saves a single file, or the whole set as a zip."],
         ["Paste it in", "Inline SVG works in HTML, JSX, Vue, Svelte and Figma with no build step."],
@@ -443,7 +452,7 @@ License: MIT. Free for personal and commercial use, modification allowed, attrib
 - Icons: ${COUNT}, outline style, one SVG file each.
 - Canvas: 32 by 32 viewBox, exported at 24 by 24.
 - Stroke: authored at 2, adjustable on the page from 1 to 3 in steps of 0.25, default 1.25.
-- Corners: rounded or square, both derived from the same source file.
+- Corners: square or rounded, default square, both derived from the same source file.
 - Color: stroke is currentColor, so an icon inherits the CSS color of its parent.
 - Dependencies: none. No npm package, no icon font, no runtime, no build step.
 - Delivery: copy the markup, download one SVG, or download the whole set as a zip built in the browser.
@@ -463,7 +472,8 @@ writeFileSync(join(DIST, "index.html"), html);
 writeFileSync(join(DIST, "robots.txt"), robots);
 writeFileSync(join(DIST, "sitemap.xml"), sitemap);
 writeFileSync(join(DIST, "llms.txt"), llms);
-for (const asset of ["styles.css", "app.js", "og.png"]) {
+mkdirSync(join(DIST, "fonts"));
+for (const asset of ["styles.css", "app.js", "og.png", "fonts/PaperMono.woff2", "fonts/PaperMono-OFL.txt"]) {
   writeFileSync(join(DIST, asset), readFileSync(join(PAGE, asset)));
 }
 

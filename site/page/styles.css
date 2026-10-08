@@ -22,8 +22,9 @@
   --surface-hover: #242424;
   --surface-sunken: #101012;
 
-  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* type pairing taken from docs.typesafe.ai: Inter for text and headings, Paper Mono for code and controls */
+  --mono: "Paper Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 
   /* Every length in this file is a multiple of 4, spacing and line boxes both.
      The reference site's 160% line-heights land on 22.4px, which is not, so they
@@ -34,8 +35,16 @@
 
   /* live control state: the whole grid reads these two values */
   --qs-weight: 1.25;
-  --qs-radius-scale: 1;
-  --qs-join: round;
+  --qs-radius-scale: 0;
+  --qs-join: miter;
+}
+
+/* Paper Mono is OFL 1.1, self-hosted from github.com/paper-design/paper-mono. */
+@font-face {
+  font-family: "Paper Mono";
+  src: url("fonts/PaperMono.woff2") format("woff2");
+  font-weight: 100 800;
+  font-display: swap;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -50,10 +59,14 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text-muted);
-  font: 500 14px/24px var(--sans);
+  font: 400 14px/24px var(--sans);
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Paper Mono with ligatures off, as typesafe sets it. */
+code, kbd, pre, .logo, .btn, .readout, .count, .segmented button, .search-key { font-variant-ligatures: none; }
 
 h1, h2, p { margin: 0; }
 
@@ -103,7 +116,7 @@ h1, h2, p { margin: 0; }
   background: none;
   border: 0;
   color: var(--text-muted);
-  font: 500 14px/24px var(--sans);
+  font: 400 14px/24px var(--sans);
   letter-spacing: -0.01em;
   text-decoration: none;
   cursor: pointer;
@@ -124,13 +137,14 @@ h1, h2, p { margin: 0; }
 .hero { text-align: center; }
 
 .hero h1 {
-  font: 600 32px/44px var(--mono);
-  color: var(--text);
+  font: 500 48px/48px var(--sans);
+  letter-spacing: -0.04em;
+  color: var(--text-strong);
 }
 
 .deck {
   max-width: 480px;
-  margin: 12px auto 0;
+  margin: 16px auto 0;
   font-size: 14px;
   line-height: 24px;
   letter-spacing: -0.01em;
@@ -169,8 +183,8 @@ h1, h2, p { margin: 0; }
 }
 
 .panel-head h2 {
-  font: 400 14px/24px var(--mono);
-  letter-spacing: -0.2px;
+  font: 500 14px/24px var(--sans);
+  letter-spacing: -0.02em;
   color: var(--text);
 }
 
@@ -184,7 +198,7 @@ h1, h2, p { margin: 0; }
 
 .count {
   font: 400 12px/16px var(--mono);
-  letter-spacing: -0.2px;
+  letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
 
@@ -195,8 +209,8 @@ h1, h2, p { margin: 0; }
 .label {
   font-size: 11px;
   line-height: 16px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -210,7 +224,7 @@ h1, h2, p { margin: 0; }
 
 .readout {
   font: 400 14px/16px var(--mono);
-  letter-spacing: -0.2px;
+  letter-spacing: 0;
   color: var(--text);
   font-variant-numeric: tabular-nums;
 }
@@ -244,7 +258,7 @@ h1, h2, p { margin: 0; }
   border-radius: 0;
   background: var(--surface-sunken);
   color: var(--text);
-  font: 500 14px/1 var(--sans);
+  font: 400 14px/1 var(--sans);
   letter-spacing: -0.01em;
   transition: border-color 0.15s ease;
   appearance: none;
@@ -298,7 +312,7 @@ input[type="range"]::-moz-range-thumb {
   background: transparent;
   color: var(--text-muted);
   font: 400 13px/20px var(--mono);
-  letter-spacing: -0.2px;
+  letter-spacing: 0;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
@@ -323,7 +337,7 @@ input[type="range"]::-moz-range-thumb {
   background: var(--surface);
   color: var(--text);
   font: 400 14px/24px var(--mono);
-  letter-spacing: -0.2px;
+  letter-spacing: 0;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
@@ -516,7 +530,8 @@ input[type="range"]::-moz-range-thumb {
 
 .sheet-title {
   color: var(--text);
-  font: 600 14px/24px var(--mono);
+  font: 500 14px/24px var(--sans);
+  letter-spacing: -0.02em;
 }
 
 .sheet-body {
@@ -532,14 +547,15 @@ input[type="range"]::-moz-range-thumb {
 
 .doc h2 {
   margin-bottom: 16px;
-  color: var(--text);
-  font: 600 20px/28px var(--mono);
+  color: var(--text-strong);
+  font: 500 24px/28px var(--sans);
+  letter-spacing: -0.03em;
 }
 
 .doc h3 {
   margin: 0 0 8px;
   color: var(--text-strong);
-  font: 600 14px/24px var(--sans);
+  font: 500 14px/24px var(--sans);
   letter-spacing: -0.01em;
 }
 
@@ -592,14 +608,14 @@ input[type="range"]::-moz-range-thumb {
   padding: 12px 16px 12px 0;
   border-bottom: 1px solid var(--hairline);
   vertical-align: top;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .spec th {
   width: 180px;
   color: var(--text-strong);
-  font: 600 11px/24px var(--mono);
-  letter-spacing: 0.04em;
+  font: 700 11px/24px var(--sans);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -613,7 +629,7 @@ input[type="range"]::-moz-range-thumb {
   padding: 0 var(--gutter) 32px;
   text-align: center;
   color: var(--text-faint);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* ---------- responsive ----------
@@ -664,14 +680,14 @@ input[type="range"]::-moz-range-thumb {
 }
 
 @media (max-width: 719px) {
-  .hero h1 { font-size: 26px; line-height: 36px; }
+  .hero h1 { font-size: 36px; line-height: 40px; }
 
   /* Four short words and a 40px logo still fit at 320, so the nav stays put.
      flex-wrap is the escape hatch for a longer label later. */
   .top { flex-wrap: wrap; gap: 12px 20px; }
   .top-nav { gap: 20px; }
 
-  .doc h2 { font-size: 18px; line-height: 26px; }
+  .doc h2 { font-size: 20px; line-height: 28px; }
   .spec th { width: auto; }
   /* Two columns will not hold a label and a sentence at this width. */
   .spec, .spec tbody, .spec tr, .spec th, .spec td { display: block; }
