@@ -121,6 +121,11 @@ questions, the `FAQPage` data and the questions in `llms.txt`, so they cannot dr
 Each answer states the fact in its first sentence. Adding a question means editing the
 array and nothing else.
 
+**Bing Webmaster Tools** verified `https://icons.evanpizzolato.com/` on October 8,
+2026, by the `msvalidate.01` meta tag on the home page, and the sitemap is submitted
+there. `BING_SITE_AUTH` in `build.mjs` holds the value. Removing the tag ends the
+verification. Google Search Console is not set up yet.
+
 **IndexNow** covers Bing, which feeds ChatGPT search and Copilot, plus Yandex and
 the other members. `indexnow.mjs` confirms the key file is live, then posts every
 sitemap URL to `api.indexnow.org`. No account is needed. Run it after each deploy
